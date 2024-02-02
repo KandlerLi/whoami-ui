@@ -1,0 +1,23 @@
+name: deploy
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # permissions:
+    #   id-token: write
+    #   contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::853955636908:role/oidc_role
+          aws-region: eu-central-1
+      - run: ng build
+      - run: aws s3 sync dist/whoami-ui/browser/ s3://kandler-li-whoami-ui
+          
