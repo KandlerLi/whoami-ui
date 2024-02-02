@@ -13,11 +13,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      - run: npm install
+      - run: npm run build
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::853955636908:role/oidc_role
-          aws-region: eu-central-1
-      - run: ng build
+            role-to-assume: arn:aws:iam::853955636908:role/oidc_role
+            aws-region: eu-central-1
       - run: aws s3 sync dist/whoami-ui/browser/ s3://kandler-li-whoami-ui
           
